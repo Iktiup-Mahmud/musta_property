@@ -1,0 +1,71 @@
+.propertycard {
+  max-width: 360px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.propertycard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+.cardimage img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+.propertycard_location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.propertycard_icon {
+  font-size: 16px;
+  color: #4b5563;
+}
+.propertycard_details {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.propertycard_detail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f9fafb;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #374151;
+  transition: background-color 0.2s ease;
+}
+
+.propertycard_detail:hover {
+  background-color: #f3f4f6;
+}
+.propertycard_footer {
+  display: flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items: center;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 0.8rem;
+  margin-top: 1rem;
+}
+
+.propertycard_price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+
