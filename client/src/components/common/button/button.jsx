@@ -1,10 +1,10 @@
 import React from 'react';
 import './button.css';
 
-export default function Button({ 
-  children, 
-  variant = 'primary', 
-  size = 'medium',
+export default function Button({
+  children,
+  variant = 'primary',   
+  size = 'small',        
   onClick,
   type = 'button',
   disabled = false,
@@ -12,23 +12,17 @@ export default function Button({
   icon,
   className = ''
 }) {
-  const classes = [
-    'btn',
-    `btn--${variant}`,
-    `btn--${size}`,
-    fullWidth ? 'btn--full-width' : '',
-    className
-  ].filter(Boolean).join(' ');
+  const classes = `btn btn--${variant} btn--${size} ${fullWidth ? 'btn--full-width' : ''} ${className}`;
 
   return (
-    <button 
+    <button
       className={classes}
       onClick={onClick}
       type={type}
       disabled={disabled}
     >
-      {icon && <span className="btn__icon">{icon}</span>}
-      <span className="btn__text">{children}</span>
+      {icon && <span className="btn_icon">{icon}</span>}
+      <span>{children}</span>
     </button>
   );
 }

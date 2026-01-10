@@ -1,0 +1,76 @@
+/* Header styles */
+.properties-header {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.properties-header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.properties-header p {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* PropertyGrid container */
+.propertygrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .propertygrid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .propertygrid {
+    grid-template-columns: 1fr;
+    padding: 0.5rem;
+  }
+}
+
+
+/* .properties-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.properties-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.properties-header p {
+  font-size: 1rem;
+  color: #4b5563;
+}
+
+.properties-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .properties-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .properties-grid {
+    grid-template-columns: 1fr;
+  }
+} */

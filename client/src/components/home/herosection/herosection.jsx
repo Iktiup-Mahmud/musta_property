@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../../../components/common/button/button';
 import SearchBar from '../../../components/common/searchbar/searchbar';
 import modernhouseimg from '../../../assets/luxury_and_rich_home_exterior_side_view.png';
-import './HeroSection.css';
+import './herosection.css';
 
 
 export default function HeroSection() {

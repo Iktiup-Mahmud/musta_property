@@ -1,0 +1,168 @@
+/* --- Main Container --- */
+.messages-tab-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  height: 600px; /* Fixed height for the whole section */
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .messages-tab-container {
+    grid-template-columns: 1fr 2.5fr; /* Sidebar ektu choto, chat ektu boro */
+  }
+}
+
+/* --- Left Sidebar: Conversation List --- */
+.conversations-list {
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  background-color: #f9fafb;
+  overflow-y: auto;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.conversations-list h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.conversation-item {
+  list-style: none;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  transition: all 0.2s;
+  margin-bottom: 0.5rem;
+  background: white;
+}
+
+.conversation-item:hover {
+  background-color: #fff7ed;
+  border-color: #fdba74;
+}
+
+.conversation-item.selected {
+  background-color: #ff6b36;
+  border-color: #ff6b36;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(255,107,54,0.3);
+}
+
+/* --- Right Side: Chat Window --- */
+.chat-window {
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+  overflow: hidden; /* Jate content baire na jay */
+  height: 100%;
+}
+
+.chat-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+}
+
+.chat-header h4 {
+  font-weight: 700;
+  margin: 0;
+  color: #111827;
+}
+
+.chat-header p {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 4px 0 0 0;
+}
+
+/* --- Messages Area & Alignment --- */
+.chat-messages {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Message bubble er majhe gap */
+}
+
+/* Message Identification Logic */
+.chat-row {
+  display: flex;
+  width: 100%;
+}
+
+.chat-row.me {
+  justify-content: flex-end; /* Amar message daan dike */
+}
+
+.chat-row.other {
+  justify-content: flex-start; /* Onnojon er message baa dike */
+}
+
+.chat-bubble {
+  padding: 0.75rem 1rem;
+  max-width: 75%;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* My Bubble Style */
+.chat-row.me .chat-bubble {
+  background-color: #ff6b36;
+  color: #fff;
+  border-radius: 1.25rem 1.25rem 0.25rem 1.25rem; /* Shape for right side */
+}
+
+/* Other Person Bubble Style */
+.chat-row.other .chat-bubble {
+  background-color: #f3f4f6;
+  color: #111827;
+  border-radius: 1.25rem 1.25rem 1.25rem 0.25rem; /* Shape for left side */
+}
+
+/* --- Input Area --- */
+.chat-input-container {
+  border-top: 1px solid #e5e7eb;
+  padding: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  background-color: #fff;
+}
+
+.chat-input-container input {
+  flex: 1;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: 0.2s;
+}
+
+.chat-input-container input:focus {
+  border-color: #ff6b36;
+  box-shadow: 0 0 0 3px rgba(255,107,54,0.1);
+}
+
+/* --- Utilities --- */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 10px;
+}

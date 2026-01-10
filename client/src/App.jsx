@@ -1,4 +1,5 @@
-import HomePage from "./pages/homepage"
+// import HomePage from "./pages/homepage"
+import AppRoutes from "./routes/appRoutes"
 
 
 
@@ -8,7 +9,8 @@ function App() {
   return (
 
     <>
-      <HomePage />
+      {/* <HomePage /> */}
+      <AppRoutes />
     
     </>
 

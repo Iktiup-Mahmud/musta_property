@@ -3,7 +3,7 @@ import FeatureCard from '../../../components/common/featurecard/featurecard';
 import { FiUserCheck, FiFileText, FiHeadphones } from 'react-icons/fi';
 import { FaHandshake } from 'react-icons/fa';
 
-import './whychooseUs.css';
+import './whychooseus.css';
 
 export default function WhyChooseUs() {
     const features = [
@@ -39,7 +39,6 @@ export default function WhyChooseUs() {
             <h2>Why Choose Us</h2>
             <div className="whychooseus_cards">
                 {features.map((item, idx) => (
-                    // <FeatureCard key={item.title} {...item} />
                     <FeatureCard
                         key={item.title}
                         icon={item.icon}

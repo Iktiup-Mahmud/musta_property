@@ -61,6 +61,39 @@
   padding: 16px 32px;
   font-size: 18px;
 }
+/* NEW: Dwello Orange Variant */
+.btn--orange {
+  background-color: #ff6b36;
+  color: #ffffff;
+}
+
+.btn--orange:hover {
+  background-color: #e55a2a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 54, 0.4);
+}
+
+.btn--secondary {
+  background-color: transparent;
+  color: #1f2937;
+  border: 1px solid #d1d5db;
+}
+
+.btn--secondary:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.btn--outline {
+  background-color: transparent;
+  color: #1f2937;
+  border: 2px solid #1f2937;
+}
+
+.btn--outline:hover {
+  background-color: #1f2937;
+  color: #ffffff;
+}
 
 /* States */
 .btn:disabled {
@@ -73,7 +106,7 @@
   width: 100%;
 }
 
-.btn__icon {
+.btn_icon {
   display: flex;
   align-items: center;
 }

@@ -1,0 +1,50 @@
+.owner-dashboard-page {
+    background: #f7f4f0;
+    min-height: 100vh;
+}
+
+.owner-dashboard-main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 15px;
+}
+
+.owner-header h1 {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.owner-header p {
+    color: #666;
+}
+
+.owner-summary-cards {
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.owner-tabs-nav {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+.owner-tabs-nav button {
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #eee;
+    cursor: pointer;
+    border: none;
+}
+
+.owner-tabs-nav button.active {
+    background: #ff6b36;
+    color: white;
+}
+
+.owner-tab-content {
+    margin-top: 20px;
+}

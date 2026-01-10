@@ -18,6 +18,7 @@
   align-items: center;
   flex: 1;
   gap: 8px;
+  min-width: 0;
 }
 
 .searchbar_field {
