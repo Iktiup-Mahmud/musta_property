@@ -9,6 +9,9 @@ import propertyImageRoutes from "./routes/Propertyimage.routes.js"
 import savedPropertyRoutes from "./routes/SavedProperty.routes.js";
 import contactRoutes from "./routes/Contact.routes.js";
 
+import adminPropertyRoutes from "./routes/Admin.property.routes.js";
+
+
 import conversationRoutes from "./routes/Conversation.routes.js";
 import messageRoutes from "./routes/Message.routes.js";
 
@@ -43,6 +46,8 @@ app.use("/api/property-images", propertyImageRoutes);
 app.use("/api/saved-properties", savedPropertyRoutes);
 
 app.use("/api/contact", contactRoutes);
+
+app.use("/api/admin", adminPropertyRoutes);
 
 
 app.use("/api/conversations", conversationRoutes);

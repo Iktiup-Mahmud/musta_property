@@ -64,3 +64,7 @@ export const uploadDocument = async (propertyId, file, type = "Other") => {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
+
+export const getApprovedProperties = () =>
+  API.get("/properties/approved");
+

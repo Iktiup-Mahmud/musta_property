@@ -33,6 +33,37 @@ export const approveProperty = async (req, res) => {
   res.json(property);
 };
 
+export const getApprovedProperties = async (req, res) => {
+  try {
+    const properties = await Property.find({ status: "approved" }).lean();
+
+    const propertyIds = properties.map(p => p._id);
+
+    const images = await PropertyImage.find({
+      property_id: { $in: propertyIds }
+    });
+
+    const documents = await Document.find({
+      property_id: { $in: propertyIds }
+    });
+
+    const result = properties.map(p => ({
+      ...p,
+      images: images
+        .filter(i => i.property_id.toString() === p._id.toString())
+        .map(i => i.imageUrl),
+      documents: documents
+        .filter(d => d.property_id.toString() === p._id.toString())
+        .map(d => d.fileUrl),
+    }));
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 export const deleteProperty = async (req, res) => {
   const property = await Property.findOneAndDelete({
     _id: req.params.id,

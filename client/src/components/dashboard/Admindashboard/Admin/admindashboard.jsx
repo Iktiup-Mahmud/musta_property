@@ -125,8 +125,6 @@
 // }
 
 
-
-
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../layout/navbar/navbar";
 import Footer from "../../../layout/footer/footer";
@@ -134,47 +132,57 @@ import Footer from "../../../layout/footer/footer";
 import PropertyApprovalCard from "../components/propertyApprovalCard/propertyApprovalCard";
 import "./admindashboard.css";
 
+import {
+  getPendingProperties,
+  approveProperty,
+  rejectProperty
+} from "../../../../Api/admindashboard.api";
+
 export default function AdminDashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
   const [pendingProperties, setPendingProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  /* 🔥 FETCH PENDING PROPERTIES */
   useEffect(() => {
-    // later: API call
-    setPendingProperties([
-      {
-        _id: "p1",
-        title: "Modern Villa",
-        owner: { name: "Fatema" },
-        location: "Dhanmondi",
-        price: 5000000,
-        description: "Luxury villa",
-        images: [],
-        status: "Pending",
-      },
-    ]);
+    fetchPendingProperties();
   }, []);
 
-  const handleApprove = (propertyId) => {
-    console.log("Approved:", propertyId);
-
-    // API:
-    // PATCH /api/properties/:id/approve
-
-    setPendingProperties(prev =>
-      prev.filter(p => p._id !== propertyId)
-    );
+  const fetchPendingProperties = async () => {
+    try {
+      const res = await getPendingProperties();
+      setPendingProperties(res.data);
+    } catch (err) {
+      console.error("Failed to load properties", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleReject = (propertyId) => {
-    console.log("Rejected:", propertyId);
+  /* ✅ APPROVE */
+  const handleApprove = async (propertyId) => {
+    try {
+      await approveProperty(propertyId);
 
-    // API:
-    // PATCH /api/properties/:id/reject
-    // + send message to owner
+      setPendingProperties(prev =>
+        prev.filter(p => p._id !== propertyId)
+      );
+    } catch (err) {
+      alert("Approval failed");
+    }
+  };
 
-    setPendingProperties(prev =>
-      prev.filter(p => p._id !== propertyId)
-    );
+  /* ❌ REJECT */
+  const handleReject = async (propertyId) => {
+    try {
+      await rejectProperty(propertyId);
+
+      setPendingProperties(prev =>
+        prev.filter(p => p._id !== propertyId)
+      );
+    } catch (err) {
+      alert("Rejection failed");
+    }
   };
 
   return (
@@ -191,7 +199,9 @@ export default function AdminDashboard() {
       <main className="admin-dashboard-main">
         <h1>Property Approval Requests</h1>
 
-        {pendingProperties.length === 0 ? (
+        {loading ? (
+          <p>Loading...</p>
+        ) : pendingProperties.length === 0 ? (
           <p>No pending property requests 🎉</p>
         ) : (
           pendingProperties.map(property => (
@@ -209,3 +219,88 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+
+
+// import React, { useEffect, useState } from "react";
+// import Navbar from "../../../layout/navbar/navbar";
+// import Footer from "../../../layout/footer/footer";
+
+// import PropertyApprovalCard from "../components/propertyApprovalCard/propertyApprovalCard";
+// import "./admindashboard.css";
+
+// export default function AdminDashboard() {
+//   const user = JSON.parse(localStorage.getItem("user"));
+//   const [pendingProperties, setPendingProperties] = useState([]);
+
+//   useEffect(() => {
+//     // later: API call
+//     setPendingProperties([
+//       {
+//         _id: "p1",
+//         title: "Modern Villa",
+//         owner: { name: "Fatema" },
+//         location: "Dhanmondi",
+//         price: 5000000,
+//         description: "Luxury villa",
+//         images: [],
+//         status: "Pending",
+//       },
+//     ]);
+//   }, []);
+
+//   const handleApprove = (propertyId) => {
+//     console.log("Approved:", propertyId);
+
+//     // API:
+//     // PATCH /api/properties/:id/approve
+
+//     setPendingProperties(prev =>
+//       prev.filter(p => p._id !== propertyId)
+//     );
+//   };
+
+//   const handleReject = (propertyId) => {
+//     console.log("Rejected:", propertyId);
+
+//     // API:
+//     // PATCH /api/properties/:id/reject
+//     // + send message to owner
+
+//     setPendingProperties(prev =>
+//       prev.filter(p => p._id !== propertyId)
+//     );
+//   };
+
+//   return (
+//     <div className="admin-dashboard-page">
+//       <Navbar
+//         isLoggedIn={true}
+//         userName={user?.name?.split(" ")[0]}
+//         onSignOut={() => {
+//           localStorage.clear();
+//           window.location.href = "/auth";
+//         }}
+//       />
+
+//       <main className="admin-dashboard-main">
+//         <h1>Property Approval Requests</h1>
+
+//         {pendingProperties.length === 0 ? (
+//           <p>No pending property requests 🎉</p>
+//         ) : (
+//           pendingProperties.map(property => (
+//             <PropertyApprovalCard
+//               key={property._id}
+//               property={property}
+//               onApprove={handleApprove}
+//               onReject={handleReject}
+//             />
+//           ))
+//         )}
+//       </main>
+
+//       <Footer />
+//     </div>
+//   );
+// }

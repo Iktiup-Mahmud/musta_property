@@ -6,6 +6,7 @@ import {
   deleteProperty,
   rejectProperty,
   updateProperty,
+  getApprovedProperties,
 } from "../controllers/Property.controllers.js";
 
 import { protect } from "../middleware/auth.middleware.js";
@@ -48,5 +49,9 @@ router.put("/:id", protect, updateProperty);
 // Admin routes
 router.patch("/:id/approve", protect, adminOnly, approveProperty);
 router.patch("/:id/reject", protect, adminOnly, rejectProperty);
+
+// routes/property.routes.js
+router.get("/approved", getApprovedProperties);
+
 
 export default router;
