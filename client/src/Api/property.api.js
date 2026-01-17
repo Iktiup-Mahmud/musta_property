@@ -36,13 +36,9 @@ export const uploadPropertyImage = async (propertyId, file) => {
   const formData = new FormData();
   formData.append("propertyId", propertyId);
   formData.append("image", file); // must match router.single("image")
-  // return API.post("/properties/images", formData, {
-  //   headers: { "Content-Type": "multipart/form-data" },
-  // });
-  return API.post("/property-images/upload", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
+  
+  // Don't set Content-Type header - let browser set it with proper boundary
+  return API.post("/property-images/upload", formData);
 };
 
 // export const uploadDocument = async (propertyId, file, type = "Other") => {
@@ -60,11 +56,16 @@ export const uploadDocument = async (propertyId, file, type = "Other") => {
   formData.append("propertyId", propertyId);
   formData.append("type", type);
   formData.append("file", file); // must match router.single("file")
-  return API.post("/documents/upload", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  
+  // Don't set Content-Type header - let browser set it with proper boundary
+  return API.post("/documents/upload", formData);
 };
 
 export const getApprovedProperties = () =>
   API.get("/properties/approved");
 
+export const getPropertyById = (id) =>
+  API.get(`/properties/${id}`);
+
+export const searchProperties = (filters) =>
+  API.get("/properties/approved", { params: filters });

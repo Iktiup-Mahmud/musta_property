@@ -117,6 +117,9 @@ export default function BuyerDashboard() {
             setActiveTab("messages");
             setSelectedConversationId(location.state.openConversationId);
         }
+        if (location.state?.activeTab) {
+            setActiveTab(location.state.activeTab);
+        }
     }, [location.state]);
 
 
@@ -205,7 +208,16 @@ export default function BuyerDashboard() {
 
 
     useChatSocket(selectedConversationId, (msg) => {
-        setMessages(prev => [...prev, msg]);
+        // Prevent duplicates and format message properly
+        setMessages(prev => {
+            if (prev.some(m => m._id === msg._id)) return prev;
+            return [...prev, {
+                _id: msg._id,
+                text: msg.text,
+                sender_id: msg.sender_id,
+                createdAt: msg.createdAt
+            }];
+        });
     });
 
 

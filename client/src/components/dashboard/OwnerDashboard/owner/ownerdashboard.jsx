@@ -10,7 +10,6 @@
 // import DocumentsTab from "../components/TabContent/documents/ownerdocumentstab";
 // import OwnerMessagesTab from "../components/TabContent/messages/ownermessagestab";
 
-
 // import {
 //     getOwnerProperties,
 //     createProperty,
@@ -70,9 +69,6 @@
 // //     ],
 // // };
 
-
-
-
 // export default function OwnerDashboard() {
 //     const user = JSON.parse(localStorage.getItem("user"));
 //     //const socket = getSocket(user._id);
@@ -83,7 +79,6 @@
 
 //     const [properties, setProperties] = useState([]);
 //     const [loadingProperties, setLoadingProperties] = useState(true);
-
 
 //     //const [properties, setProperties] = useState(ownerProperties); // <-- state for properties
 //     //const [selectedConversationId, setSelectedConversationId] = useState(conversations[0]?.id || null);
@@ -97,7 +92,6 @@
 //     const [newMessage, setNewMessage] = useState("");
 
 //     const [loadingConversations, setLoadingConversations] = useState(true);
-
 
 //     //const currentMessages = messagesByConversation[selectedConversationId] || [];
 
@@ -128,12 +122,6 @@
 //         }
 //     };
 
-
-
-
-
-
-
 //     useEffect(() => {
 //         if (!userId) return;
 
@@ -149,8 +137,6 @@
 //             .finally(() => setLoadingConversations(false));
 //     }, [userId]);
 
-
-
 //     useEffect(() => {
 //         if (!selectedConversationId) return;
 
@@ -158,9 +144,6 @@
 //             .then(res => setMessages(res.data))
 //             .catch(err => console.error(err));
 //     }, [selectedConversationId]);
-
-
-
 
 //     // useChatSocket(selectedConversationId, (message) => {
 //     //     setMessages(prev => [
@@ -200,8 +183,6 @@
 //         setNewMessage("");
 //     };
 
-
-
 //     // const handleSendMessage = () => {
 //     //     if (!newMessage.trim()) return;
 
@@ -219,10 +200,6 @@
 //         localStorage.removeItem("token");
 //         window.location.href = "/auth";
 //     };
-
-
-
-
 
 //     // const addProperty = (newProp) => {
 //     //     setProperties([...properties, newProp]);
@@ -294,7 +271,6 @@
 //                             deleteProperty={deleteProperty}
 //                         />
 
-
 //                         {activeTab === "bookings" && <OwnerBookingTab bookings={bookingRequests} />}
 //                         {activeTab === "documents" && <DocumentsTab documents={documents} />}
 //                         {activeTab === "messages" && (
@@ -320,8 +296,8 @@
 //     );
 // }
 
-
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "../../../layout/navbar/navbar";
 import Footer from "../../../layout/footer/footer";
 
@@ -330,6 +306,7 @@ import OwnerProfileSummary from "../components/OwnerProfileSummary/OwnerProfileS
 
 import PropertiesTab from "../components/TabContent/properties/ownerpropertiestab";
 import OwnerMessagesTab from "../components/TabContent/messages/ownermessagestab";
+import NotificationsTab from "../components/TabContent/notifications/NotificationsTab";
 
 import {
   getOwnerProperties,
@@ -349,8 +326,20 @@ import "../components/TabContent/tab.css";
 export default function OwnerDashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?._id;
+  const location = useLocation();
 
   const [activeTab, setActiveTab] = useState("properties");
+
+  /* ---------------- Handle navigation state ---------------- */
+  useEffect(() => {
+    if (location.state?.openConversationId) {
+      setActiveTab("messages");
+      setSelectedConversationId(location.state.openConversationId);
+    }
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+    }
+  }, [location.state]);
 
   /* ---------------- 🔔 Notifications ---------------- */
   const [notificationsCount, setNotificationsCount] = useState(
@@ -367,7 +356,6 @@ export default function OwnerDashboard() {
       .catch(console.error)
       .finally(() => setLoadingProperties(false));
   }, []);
-
 
   const fetchProperties = async () => {
     try {
@@ -391,10 +379,9 @@ export default function OwnerDashboard() {
   // };
   const addProperty = async (data) => {
     const res = await createProperty(data);
-    setProperties(prev => [...prev, res.data]);
+    setProperties((prev) => [...prev, res.data]);
     return res.data; // 🔑 REQUIRED for uploads
   };
-
 
   const deleteProperty = async (id) => {
     try {
@@ -514,13 +501,16 @@ export default function OwnerDashboard() {
 
         <section className="owner-tabs-section">
           <div className="owner-tabs-nav">
-            {["properties", "messages"].map((tab) => (
+            {["properties", "messages", "notifications"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={activeTab === tab ? "active" : ""}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab === "notifications" && notificationsCount > 0 && (
+                  <span className="tab-badge">{notificationsCount}</span>
+                )}
               </button>
             ))}
           </div>
@@ -549,7 +539,9 @@ export default function OwnerDashboard() {
                 addProperty={addProperty}
                 deleteProperty={deleteProperty}
                 updateProperty={(updated) => {
-                  setProperties(prev => prev.map(p => p._id === updated._id ? updated : p));
+                  setProperties((prev) =>
+                    prev.map((p) => (p._id === updated._id ? updated : p))
+                  );
                 }}
                 refreshProperties={fetchProperties} // 🔑 pass this
               />
@@ -567,6 +559,14 @@ export default function OwnerDashboard() {
                 loadingConversations={loadingConversations}
               />
             )}
+
+            {activeTab === "notifications" && (
+              <NotificationsTab
+                onNotificationRead={() =>
+                  setNotificationsCount((prev) => Math.max(0, prev - 1))
+                }
+              />
+            )}
           </div>
         </section>
       </main>
@@ -575,7 +575,6 @@ export default function OwnerDashboard() {
     </div>
   );
 }
-
 
 // import React, { useState, useEffect } from "react";
 // import Navbar from "../../../layout/navbar/navbar";

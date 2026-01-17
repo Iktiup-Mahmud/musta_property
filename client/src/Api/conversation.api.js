@@ -5,3 +5,6 @@ export const getConversations = () =>
 
 export const createConversation = (data) =>
   API.post("/conversations", data);
+
+export const getConversationById = (id) =>
+  API.get(`/conversations/${id}`);

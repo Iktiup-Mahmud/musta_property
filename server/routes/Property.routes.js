@@ -7,6 +7,7 @@ import {
   rejectProperty,
   updateProperty,
   getApprovedProperties,
+  getPropertyById,
 } from "../controllers/Property.controllers.js";
 
 import { protect } from "../middleware/auth.middleware.js";
@@ -52,6 +53,9 @@ router.patch("/:id/reject", protect, adminOnly, rejectProperty);
 
 // routes/property.routes.js
 router.get("/approved", getApprovedProperties);
+
+// Get single property by ID (public)
+router.get("/:id", getPropertyById);
 
 
 export default router;

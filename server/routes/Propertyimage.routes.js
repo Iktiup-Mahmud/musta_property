@@ -5,14 +5,27 @@ import {
   deletePropertyImage,
 } from "../controllers/PropertyImage.controllers.js";
 import { protect } from "../middleware/auth.middleware.js";
-import upload from "../middleware/upload.middleware.js";
+import { uploadImage } from "../config/cloudinary.js";
 
 const router = express.Router();
+
+// Multer error handling wrapper
+const handleMulterError = (err, req, res, next) => {
+  if (err) {
+    console.error("Multer/Cloudinary Error:", err);
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res.status(400).json({ message: "File too large. Max size is 10MB." });
+    }
+    return res.status(400).json({ message: err.message || "File upload failed" });
+  }
+  next();
+};
 
 router.post(
   "/upload",
   protect,
-  upload.single("image"),
+  uploadImage.single("image"),
+  handleMulterError,
   uploadPropertyImage
 );
 

@@ -1,377 +1,128 @@
-// import { useParams, Link } from "react-router-dom";
-// import Navbar from "../components/layout/navbar/navbar";
-// import Footer from "../components/layout/footer/footer";
-
-// import { useNavigate } from "react-router-dom";
-// import axios from "../Api/axios.js";
-
-
-// import { FiArrowLeft, FiMapPin, FiHome, FiMaximize2 } from 'react-icons/fi';
-
-// import img1 from '../assets/WhatsApp Image 2025-11-09 at 20.18.45_de9d3580.jpg';
-// import img2 from '../assets/WhatsApp Image 2025-11-09 at 20.24.34_bb97bdc6.jpg';
-
-// function PropertyDetailsPage() {
-//   const navigate = useNavigate();
-//   const user = JSON.parse(localStorage.getItem("user"));
-
-//   const handleMessageOwner = async () => {
-//     if (!user) {
-//       navigate("/auth");
-//       return;
-//     }
-
-//     console.log("Sending conversation data:", {
-//       property_id: property._id,
-//       owner_id: property.owner_id,
-//       buyer_id: user._id
-//     });
-
-//     try {
-//       const res = await axios.post(
-//         "http://localhost:5000/api/conversations",
-//         {
-//           property_id: property._id, // must exist
-//           owner_id: property.owner_id, // must exist
-//           buyer_id: user._id // backend expect korte pare
-//         },
-//         {
-//           headers: {
-//             Authorization: `Bearer ${user.token}`,
-//           },
-//         }
-//       );
-
-//       const conversation = res.data;
-
-//       navigate("/buyer/dashboard", {
-//         state: { openConversationId: conversation._id },
-//       });
-//     } catch (err) {
-//       console.error("Failed to start conversation", err);
-//     }
-//   };
-
-
-//   // const handleMessageOwner = async () => {
-//   //   if (!user) {
-//   //     navigate("/auth"); // not logged in
-//   //     return;
-//   //   }
-
-//   //   try {
-//   //     const res = await axios.post(
-//   //       "http://localhost:5000/api/conversations",
-//   //       {
-//   //         property_id: property._id,   // snake_case
-//   //         owner_id: property.owner_id   // snake_case
-//   //       },
-//   //       {
-//   //         headers: {
-//   //           Authorization: `Bearer ${user.token}`,
-//   //         },
-//   //       }
-//   //     );
-
-
-//   //     const conversation = res.data;
-
-//   //     // 🔥 redirect buyer dashboard → messages tab
-//   //     navigate("/buyer/dashboard", {
-//   //       state: {
-//   //         openConversationId: conversation._id,
-//   //       },
-//   //     });
-//   //   } catch (err) {
-//   //     console.error("Failed to start conversation", err);
-//   //   }
-//   // };
-
-
-//   const dummyProperties = [
-//     {
-//       _id: "64fabc1234567890abcdef12", // 🔑 add _id
-//       owner_id: "6930b85f36799bc60cec662c", // 🔑 add owner_id
-//       id: 1,
-//       image: img1,
-//       title: "Luxury Home in Ranirbazar",
-//       location: "Ranirbazar, comilla",
-//       bedrooms: 6,
-//       sqft: 1800,
-//       price: "৳85,00,000",
-//       type: "Luxury Home",
-//       description: "This stunning luxury home features 6 spacious bedrooms across 1800 sq ft. Located in the heart of Ranirbazar, Comilla, this property offers modern amenities, beautiful architecture, and a peaceful neighborhood."
-//     },
-//     {
-//       _id: "64fabc1234567890abcdef13", // 🔑 add _id
-//       owner_id: "6930b85f36799bc60cec663", // 🔑 add owner_id
-//       id: 2,
-//       image: img2,
-//       title: "Modern Villa in Ashoktala",
-//       location: "Ashoktala, comilla",
-//       bedrooms: 4,
-//       sqft: 2500,
-//       price: "৳1,25,00,000",
-//       type: "Modern Villa",
-//       description: "A magnificent modern villa spanning 2500 sq ft with 4 luxurious bedrooms. Situated in the prestigious Ashoktala area of Comilla, this villa boasts contemporary design and high-end fixtures."
-//     }
-//   ];
-
-//   const { id } = useParams();
-//   const property = dummyProperties.find((p) => String(p.id) === id);
-
-//   if (!property) {
-//     return (
-//       <div>
-//         <Navbar />
-//         <main className="max-w-4xl mx-auto px-4 py-16 text-center">
-//           <h1 className="text-2xl font-bold mb-4">Property not found</h1>
-//           <Link to="/properties" className="text-brown-600 hover:underline">
-//             ← Back to Properties
-//           </Link>
-//         </main>
-//         <Footer />
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div>
-//       <Navbar />
-
-//       <main className="max-w-6xl mx-auto px-4 py-10">
-//         <Link to="/properties" className="inline-flex items-center text-brown-600 hover:underline mb-6">
-//           <FiArrowLeft className="mr-2" />
-//           Back to Properties
-//         </Link>
-
-//         <div className="grid lg:grid-cols-3 gap-10">
-//           <section className="lg:col-span-2 space-y-6">
-//             <img
-//               src={property.image}
-//               alt={property.title}
-//               className="w-full h-96 object-cover rounded-xl shadow-lg"
-//             />
-
-//             <div>
-//               <h1 className="text-4xl font-bold mb-2">{property.title}</h1>
-//               <div className="flex items-center text-gray-600 mb-4">
-//                 <FiMapPin className="mr-2" />
-//                 <span>{property.location}</span>
-//               </div>
-//               <p className="text-brown-700 font-bold text-3xl mb-6">{property.price}</p>
-//             </div>
-
-//             <div className="bg-gray-50 rounded-lg p-6">
-//               <h2 className="text-xl font-semibold mb-4">Property Features</h2>
-//               <div className="grid md:grid-cols-3 gap-4">
-//                 <div className="flex items-center">
-//                   <FiHome className="text-brown-600 mr-3 text-xl" />
-//                   <div>
-//                     <p className="text-sm text-gray-500">Bedrooms</p>
-//                     <p className="font-semibold">{property.bedrooms} Rooms</p>
-//                   </div>
-//                 </div>
-//                 <div className="flex items-center">
-//                   <FiMaximize2 className="text-brown-600 mr-3 text-xl" />
-//                   <div>
-//                     <p className="text-sm text-gray-500">Area</p>
-//                     <p className="font-semibold">{property.sqft} sq ft</p>
-//                   </div>
-//                 </div>
-//                 <div className="flex items-center">
-//                   <FiHome className="text-brown-600 mr-3 text-xl" />
-//                   <div>
-//                     <p className="text-sm text-gray-500">Type</p>
-//                     <p className="font-semibold">{property.type}</p>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-
-//             <div>
-//               <h2 className="text-2xl font-semibold mb-4">Description</h2>
-//               <p className="text-gray-700 leading-relaxed">{property.description}</p>
-//             </div>
-//           </section>
-
-//           <aside className="space-y-4 bg-white shadow-lg rounded-xl p-6 h-fit sticky top-4">
-//             <h2 className="font-semibold text-xl mb-4">Interested?</h2>
-
-//             <button className="w-full bg-brown-600 hover:bg-brown-700 text-white rounded-lg py-3 text-sm font-medium transition">
-//               Request Visit
-//             </button>
-
-//             <button
-//               onClick={handleMessageOwner}
-//               className="w-full border-2 border-brown-600 text-brown-700 hover:bg-brown-50 rounded-lg py-3 text-sm font-medium transition">
-//               Message Owner
-//             </button>
-
-//             <button className="w-full border-2 border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg py-3 text-sm font-medium transition">
-//               Save Property
-//             </button>
-
-//             <div className="pt-4 border-t mt-6">
-//               <p className="text-xs text-gray-500 text-center">
-//                 📞 Need help? Contact our support team
-//               </p>
-//             </div>
-//           </aside>
-//         </div>
-//       </main>
-
-//       <Footer />
-//     </div>
-//   );
-// }
-
-// export default PropertyDetailsPage;
-
-
-import { useParams, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/layout/navbar/navbar";
 import Footer from "../components/layout/footer/footer";
-import { useNavigate } from "react-router-dom";
 import axios from "../Api/axios.js";
-import { FiArrowLeft, FiMapPin, FiHome, FiMaximize2 } from 'react-icons/fi';
-import img1 from '../assets/WhatsApp Image 2025-11-09 at 20.18.45_de9d3580.jpg';
-import img2 from '../assets/WhatsApp Image 2025-11-09 at 20.24.34_bb97bdc6.jpg';
+import { getPropertyById } from "../Api/property.api";
+import { FiArrowLeft, FiMapPin, FiHome, FiMaximize2, FiCalendar, FiUser } from "react-icons/fi";
+import "./propertydetailspage.css";
 
-function PropertyDetailsPage() {
-  const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
-  const { id } = useParams();
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
-  const dummyProperties = [
-    {
-      _id: "64fabc1234567890abcdef12",
-      //owner_id: "6930b85f36799bc60cec662c",
-      owner_id: "69597357b4115a9f8a4ac00c",  //Aties
-      id: 1,
-      image: img1,
-      title: "Luxury Home in Ranirbazar",
-      location: "Ranirbazar, comilla",
-      bedrooms: 6,
-      sqft: 1800,
-      price: "৳85,00,000",
-      type: "Luxury Home",
-      description: "This stunning luxury home features 6 spacious bedrooms across 1800 sq ft. Located in the heart of Ranirbazar, Comilla, this property offers modern amenities, beautiful architecture, and a peaceful neighborhood."
-    },
-    {
-      _id: "64fabc1234567890abcdef13",
-      // owner_id: "6930b85f36799bc60cec663",
-      owner_id: "695d1c7178a20bb70a0c6bce",
-      id: 2,
-      image: img2,
-      title: "Modern Villa in Ashoktala",
-      location: "Ashoktala, comilla",
-      bedrooms: 4,
-      sqft: 2500,
-      price: "৳1,25,00,000",
-      type: "Modern Villa",
-      description: "A magnificent modern villa spanning 2500 sq ft with 4 luxurious bedrooms. Situated in the prestigious Ashoktala area of Comilla, this villa boasts contemporary design and high-end fixtures."
-    },
-    {
-      _id: "64fabc1234567890abcdef13",
-      // owner_id: "6930b85f36799bc60cec663",
-      owner_id: "695fe0d49d43774a69e57174",
-      id: 3,
-      image: img2,
-      title: "Modern Villa in Ashoktala",
-      location: "Ashoktala, comilla",
-      bedrooms: 4,
-      sqft: 2500,
-      price: "৳1,25,00,000",
-      type: "Modern Villa",
-      description: "A magnificent modern villa spanning 2500 sq ft with 4 luxurious bedrooms. Situated in the prestigious Ashoktala area of Comilla, this villa boasts contemporary design and high-end fixtures."
-    },
-  ];
-
-  const property = dummyProperties.find((p) => String(p.id) === id);
-
-  // // 🔹 Start conversation handler
-  // const handleMessageOwner = async () => {
-  //   if (!user) {
-  //     navigate("/auth");
-  //     return;
-  //   }
-
-  //   if (!property?._id || !property?.owner_id) {
-  //     console.error("Property ID or Owner ID is missing!");
-  //     return;
-  //   }
-
-  //   const payload = {
-  //     property_id: property._id,
-  //     owner_id: property.owner_id,
-  //     buyer_id: user._id,
-  //   };
-
-  //   console.log("Sending conversation data:", payload);
-
-  //   try {
-  //     const res = await axios.post("/conversations", payload, {
-  //       headers: { Authorization: `Bearer ${user.token}` },
-  //     });
-
-  //     const conversation = res.data;
-
-  //     navigate("/buyer/dashboard", {
-  //       state: { openConversationId: conversation._id },
-  //     });
-  //   } catch (err) {
-  //     console.error("Failed to start conversation", err.response?.data || err.message);
-  //   }
-  // };
-
-
-  const handleMessageOwner = async () => {
-  if (!user) {
-    navigate("/auth");
-    return;
+// Helper to get image URL (handles both Cloudinary and local URLs)
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return "https://via.placeholder.com/800x500?text=No+Image";
+  // If it's already a full URL (Cloudinary), use it directly
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+    return imagePath;
   }
-
-  if (!property?._id || !property?.owner_id) {
-    console.error("Property ID or Owner ID is missing!");
-    return;
-  }
-
-  const payload = {
-    propertyId: property._id,
-    ownerId: property.owner_id, 
-  };
-
-  console.log("Sending conversation data:", payload);
-
-  try {
-    const res = await axios.post("/conversations", payload, {
-      headers: { Authorization: `Bearer ${user.token}` },
-    });
-
-    const conversation = res.data;
-
-    // redirect buyer dashboard → messages tab
-    navigate("/dashboard/buyer", {
-      state: { openConversationId: conversation._id },
-    });
-  } catch (err) {
-    console.error(
-      "Failed to start conversation",
-      err.response?.data || err.message
-    );
-  }
+  // Otherwise, prepend API URL for legacy local uploads
+  return `${API_URL}/${imagePath.replace(/\\/g, "/")}`;
 };
 
+function PropertyDetailsPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  if (!property) {
+  const [property, setProperty] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [activeImage, setActiveImage] = useState(0);
+
+  useEffect(() => {
+    const fetchProperty = async () => {
+      try {
+        const res = await getPropertyById(id);
+        setProperty(res.data);
+      } catch (err) {
+        console.error("Error fetching property", err);
+        setError("Property not found or failed to load.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchProperty();
+    }
+  }, [id]);
+
+  const handleMessageOwner = async () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+
+    if (!property?._id || !property?.owner_id?._id) {
+      console.error("Property ID or Owner ID is missing!");
+      alert("Unable to start conversation. Property information is missing.");
+      return;
+    }
+
+    // Don't allow owner to message themselves
+    if (property.owner_id._id === user._id) {
+      alert("You cannot message yourself!");
+      return;
+    }
+
+    const payload = {
+      propertyId: property._id,
+      ownerId: property.owner_id._id,
+    };
+
+    try {
+      // Use the imported API instance which handles token automatically
+      const res = await axios.post("/conversations", payload);
+      const conversation = res.data;
+      
+      // Navigate to appropriate dashboard based on user role
+      const dashboardPath = user.role === "owner" ? "/dashboard/owner" : "/dashboard/buyer";
+      navigate(dashboardPath, {
+        state: { openConversationId: conversation._id, activeTab: "messages" },
+      });
+    } catch (err) {
+      console.error("Failed to start conversation", err.response?.data || err.message);
+      alert("Failed to start conversation. Please try again.");
+    }
+  };
+
+  const formatPrice = (price) => {
+    if (!price) return "0";
+    return price.toLocaleString("en-IN");
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  if (loading) {
     return (
       <div>
         <Navbar />
-        <main className="max-w-4xl mx-auto px-4 py-16 text-center">
-          <h1 className="text-2xl font-bold mb-4">Property not found</h1>
-          <Link to="/properties" className="text-brown-600 hover:underline">
-            ← Back to Properties
+        <main className="property-details-loading">
+          <div className="loading-spinner"></div>
+          <p>Loading property details...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !property) {
+    return (
+      <div>
+        <Navbar />
+        <main className="property-details-error">
+          <h1>Property not found</h1>
+          <p>{error || "The property you're looking for doesn't exist."}</p>
+          <Link to="/properties" className="back-link">
+            <FiArrowLeft /> Back to Properties
           </Link>
         </main>
         <Footer />
@@ -380,80 +131,129 @@ function PropertyDetailsPage() {
   }
 
   return (
-    <div>
+    <div className="property-details-page">
       <Navbar />
-      <main className="max-w-6xl mx-auto px-4 py-10">
-        <Link to="/properties" className="inline-flex items-center text-brown-600 hover:underline mb-6">
-          <FiArrowLeft className="mr-2" />
-          Back to Properties
+
+      <main className="property-details-main">
+        <Link to="/properties" className="back-link">
+          <FiArrowLeft /> Back to Properties
         </Link>
 
-        <div className="grid lg:grid-cols-3 gap-10">
-          <section className="lg:col-span-2 space-y-6">
-            <img src={property.image} alt={property.title} className="w-full h-96 object-cover rounded-xl shadow-lg" />
-
-            <div>
-              <h1 className="text-4xl font-bold mb-2">{property.title}</h1>
-              <div className="flex items-center text-gray-600 mb-4">
-                <FiMapPin className="mr-2" />
-                <span>{property.location}</span>
+        <div className="property-details-content">
+          {/* Image Gallery */}
+          <section className="property-gallery">
+            <div className="gallery-main">
+              <img
+                src={getImageUrl(property.images?.[activeImage])}
+                alt={property.title}
+                className="gallery-main-image"
+              />
+            </div>
+            {property.images && property.images.length > 1 && (
+              <div className="gallery-thumbnails">
+                {property.images.map((img, index) => (
+                  <button
+                    key={index}
+                    className={`thumbnail ${index === activeImage ? "active" : ""}`}
+                    onClick={() => setActiveImage(index)}
+                  >
+                    <img src={getImageUrl(img)} alt={`${property.title} ${index + 1}`} />
+                  </button>
+                ))}
               </div>
-              <p className="text-brown-700 font-bold text-3xl mb-6">{property.price}</p>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h2 className="text-xl font-semibold mb-4">Property Features</h2>
-              <div className="grid md:grid-cols-3 gap-4">
-                <div className="flex items-center">
-                  <FiHome className="text-brown-600 mr-3 text-xl" />
-                  <div>
-                    <p className="text-sm text-gray-500">Bedrooms</p>
-                    <p className="font-semibold">{property.bedrooms} Rooms</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <FiMaximize2 className="text-brown-600 mr-3 text-xl" />
-                  <div>
-                    <p className="text-sm text-gray-500">Area</p>
-                    <p className="font-semibold">{property.sqft} sq ft</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <FiHome className="text-brown-600 mr-3 text-xl" />
-                  <div>
-                    <p className="text-sm text-gray-500">Type</p>
-                    <p className="font-semibold">{property.type}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h2 className="text-2xl font-semibold mb-4">Description</h2>
-              <p className="text-gray-700 leading-relaxed">{property.description}</p>
-            </div>
+            )}
           </section>
 
-          <aside className="space-y-4 bg-white shadow-lg rounded-xl p-6 h-fit sticky top-4">
-            <h2 className="font-semibold text-xl mb-4">Interested?</h2>
-            <button className="w-full bg-brown-600 hover:bg-brown-700 text-white rounded-lg py-3 text-sm font-medium transition">
-              Request Visit
-            </button>
-            <button
-              onClick={handleMessageOwner}
-              className="w-full border-2 border-brown-600 text-brown-700 hover:bg-brown-50 rounded-lg py-3 text-sm font-medium transition"
-            >
-              Message Owner
-            </button>
-            <button className="w-full border-2 border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg py-3 text-sm font-medium transition">
-              Save Property
-            </button>
-            <div className="pt-4 border-t mt-6">
-              <p className="text-xs text-gray-500 text-center">📞 Need help? Contact our support team</p>
-            </div>
-          </aside>
+          {/* Property Info */}
+          <div className="property-info-grid">
+            <section className="property-main-info">
+              <div className="property-header">
+                <div>
+                  <span className="property-type-badge">{property.propertyType || "Property"}</span>
+                  <h1 className="property-title">{property.title}</h1>
+                  <div className="property-location">
+                    <FiMapPin />
+                    <span>{property.location}</span>
+                  </div>
+                </div>
+                <div className="property-price">
+                  <span className="price-label">Price</span>
+                  <span className="price-value">৳{formatPrice(property.price)}</span>
+                </div>
+              </div>
+
+              {/* Features */}
+              <div className="property-features">
+                <h2>Property Features</h2>
+                <div className="features-grid">
+                  <div className="feature-item">
+                    <FiHome className="feature-icon" />
+                    <div>
+                      <span className="feature-label">Bedrooms</span>
+                      <span className="feature-value">{property.bedrooms || 0}</span>
+                    </div>
+                  </div>
+                  <div className="feature-item">
+                    <FiHome className="feature-icon" />
+                    <div>
+                      <span className="feature-label">Bathrooms</span>
+                      <span className="feature-value">{property.bathrooms || 0}</span>
+                    </div>
+                  </div>
+                  <div className="feature-item">
+                    <FiMaximize2 className="feature-icon" />
+                    <div>
+                      <span className="feature-label">Area</span>
+                      <span className="feature-value">{property.area || 0} sq ft</span>
+                    </div>
+                  </div>
+                  <div className="feature-item">
+                    <FiCalendar className="feature-icon" />
+                    <div>
+                      <span className="feature-label">Listed On</span>
+                      <span className="feature-value">{formatDate(property.createdAt)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Description */}
+              <div className="property-description">
+                <h2>Description</h2>
+                <p>{property.description || "No description available."}</p>
+              </div>
+            </section>
+
+            {/* Sidebar */}
+            <aside className="property-sidebar">
+              <div className="sidebar-card">
+                <h3>Interested in this property?</h3>
+
+                {property.owner_id && (
+                  <div className="owner-info">
+                    <FiUser className="owner-icon" />
+                    <div>
+                      <span className="owner-label">Listed by</span>
+                      <span className="owner-name">{property.owner_id.name || "Owner"}</span>
+                    </div>
+                  </div>
+                )}
+
+                <div className="sidebar-actions">
+                  <button className="btn-primary" onClick={handleMessageOwner}>
+                    Message Owner
+                  </button>
+                  <button className="btn-secondary">Request Visit</button>
+                  <button className="btn-outline">Save Property</button>
+                </div>
+
+                <p className="sidebar-help">📞 Need help? Contact our support team</p>
+              </div>
+            </aside>
+          </div>
         </div>
       </main>
+
       <Footer />
     </div>
   );

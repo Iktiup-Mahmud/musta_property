@@ -51,11 +51,6 @@
 //     const user = JSON.parse(localStorage.getItem("user"));
 //     const [activeTab, setActiveTab] = useState("users");
 
-
-
-
-
-
 //     const handleSignOut = () => {
 //         localStorage.removeItem("user");
 //         localStorage.removeItem("token");
@@ -124,7 +119,6 @@
 //     );
 // }
 
-
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../layout/navbar/navbar";
 import Footer from "../../../layout/footer/footer";
@@ -135,7 +129,7 @@ import "./admindashboard.css";
 import {
   getPendingProperties,
   approveProperty,
-  rejectProperty
+  rejectProperty,
 } from "../../../../Api/admindashboard.api";
 
 export default function AdminDashboard() {
@@ -164,22 +158,18 @@ export default function AdminDashboard() {
     try {
       await approveProperty(propertyId);
 
-      setPendingProperties(prev =>
-        prev.filter(p => p._id !== propertyId)
-      );
+      setPendingProperties((prev) => prev.filter((p) => p._id !== propertyId));
     } catch (err) {
       alert("Approval failed");
     }
   };
 
   /* ❌ REJECT */
-  const handleReject = async (propertyId) => {
+  const handleReject = async (propertyId, reason) => {
     try {
-      await rejectProperty(propertyId);
+      await rejectProperty(propertyId, reason);
 
-      setPendingProperties(prev =>
-        prev.filter(p => p._id !== propertyId)
-      );
+      setPendingProperties((prev) => prev.filter((p) => p._id !== propertyId));
     } catch (err) {
       alert("Rejection failed");
     }
@@ -204,7 +194,7 @@ export default function AdminDashboard() {
         ) : pendingProperties.length === 0 ? (
           <p>No pending property requests 🎉</p>
         ) : (
-          pendingProperties.map(property => (
+          pendingProperties.map((property) => (
             <PropertyApprovalCard
               key={property._id}
               property={property}
@@ -219,8 +209,6 @@ export default function AdminDashboard() {
     </div>
   );
 }
-
-
 
 // import React, { useEffect, useState } from "react";
 // import Navbar from "../../../layout/navbar/navbar";

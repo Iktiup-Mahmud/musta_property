@@ -1,6 +1,16 @@
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000"); // backend URL
+// Get backend URL from environment or use default
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL?.replace("/api", "") || "http://localhost:5001";
+
+const socket = io(BACKEND_URL, {
+  withCredentials: true,
+  transports: ["websocket", "polling"],
+  reconnection: true,
+  reconnectionAttempts: 5,
+  reconnectionDelay: 1000,
+});
+
 export default socket;
 
 
